@@ -28,8 +28,10 @@ const FULL_DECK = [
     { category: "IMPOSTOR", name: "Tom Cruise", roots: "NO Belarusian roots!", skill: "Runs up walls", phrase: "I jumped over Minsk! In simulator" },
     { category: "IMPOSTOR", name: "Angelina Jolie", roots: "NO roots!", skill: "Adopts things", phrase: "I adopted a Belarusian potato" },
     { category: "IMPOSTOR", name: "Leonardo DiCaprio", roots: "NO roots!", skill: "Fake accent", phrase: "I filmed The Revenant in Belarus?" },
+    { category: "IMPOSTOR", name: "Brad Pitt", roots: "NO roots!", skill: "Handsome face", phrase: "Blonde, high cheekbones - Belarusian!" },
     { category: "COMIC", name: "Dzmitry, TikTok blogger", roots: "Thinks he's Belarusian", skill: "Makes viral videos", phrase: "Subscribe for survival tips" },
-    { category: "COMIC", name: "Talking potato", roots: "It IS a potato", skill: "Can be eaten", phrase: "Don't eat me, I can still grow!" }
+    { category: "COMIC", name: "Talking potato", roots: "It IS a potato", skill: "Can be eaten", phrase: "Don't eat me, I can still grow!" },
+    { category: "COMIC", name: "John from Ohio", roots: "I have a friend from Minsk!", skill: "Teaches baseball", phrase: "Belarus? Near Russia?" }
 ];
 
 const CRISES = [
@@ -37,7 +39,9 @@ const CRISES = [
     "🐀 A giant rodent is chewing through the potato supply!",
     "🥬 Someone stole the secret jar of fermented cabbage!",
     "☢️ Radiation leak detected – only potato peels for protection!",
-    "🚰 The water filter broke. All you have is potato juice!"
+    "🚰 The water filter broke. All you have is potato juice!",
+    "🔥 A fire started in the generator room!",
+    "🧟 Neighbors from the next bunker are begging for potatoes!"
 ];
 
 io.on('connection', (socket) => {
