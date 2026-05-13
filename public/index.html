@@ -23,10 +23,8 @@
             margin-bottom: 30px;
             border: 2px solid #d4a54e;
             text-align: center;
-            animation: fadeIn 1s ease;
         }
-        @keyframes fadeIn { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: translateY(0); } }
-        .lore-title { font-size: 2.5rem; margin-bottom: 20px; color: #f3c26b; text-shadow: 2px 2px 0 #5a3a1a; }
+        .lore-title { font-size: 2.5rem; margin-bottom: 20px; color: #f3c26b; }
         .lore-text { font-size: 1.1rem; line-height: 1.6; max-width: 800px; margin: 0 auto; }
         .rules-box { background: #00000055; border-radius: 30px; padding: 20px; margin: 25px auto; max-width: 700px; text-align: left; }
         .rules-box h3 { color: #f3c26b; margin-bottom: 15px; }
@@ -41,7 +39,6 @@
             border: none;
             border-radius: 60px;
             cursor: pointer;
-            transition: 0.2s;
             font-weight: bold;
         }
         .mode-btn.active { background: #e8b560; color: #1e2a0e; box-shadow: 0 0 0 2px #ffeaac; }
@@ -50,15 +47,13 @@
             background: linear-gradient(145deg, #e8b560, #c9922e);
             border: none;
             padding: 12px 28px;
-            font-size: 1.1rem;
+            font-size: 1rem;
             font-weight: bold;
             border-radius: 60px;
             cursor: pointer;
             margin: 8px;
             color: #1e2a0e;
-            transition: 0.2s;
         }
-        .btn:active { transform: scale(0.97); }
         .btn-danger { background: linear-gradient(145deg, #b5452c, #8b2e1a); color: white; }
         .btn-success { background: linear-gradient(145deg, #4a8b2c, #2e6a1a); color: white; }
         
@@ -89,10 +84,10 @@
             padding: 24px;
             border-left: 12px solid #e8b560;
         }
-        .card-hidden { filter: blur(8px); background: #5a6e4a; color: #5a6e4a; cursor: pointer; text-align: center; padding: 50px; }
+        .card-hidden { filter: blur(8px); background: #5a6e4a; cursor: pointer; text-align: center; padding: 50px; }
         .card-hidden::after { content: "🔒 Click to reveal 🔒"; filter: blur(0); color: #ffefb0; display: block; font-weight: bold; }
         .badge { background: #e8b560; display: inline-block; padding: 4px 12px; border-radius: 40px; font-size: 0.7rem; font-weight: bold; color: #1e2a0a; margin-right: 8px; }
-        .timer { font-size: 2.5rem; font-family: monospace; background: #00000088; display: inline-block; padding: 10px 30px; border-radius: 60px; letter-spacing: 5px; }
+        .timer { font-size: 2rem; font-family: monospace; background: #00000088; display: inline-block; padding: 8px 20px; border-radius: 60px; letter-spacing: 3px; }
         .vote-buttons { display: flex; flex-wrap: wrap; gap: 10px; margin: 15px 0; }
         .vote-btn { background: #4a3a2a; color: white; padding: 8px 16px; border-radius: 40px; border: none; cursor: pointer; }
         .vote-btn.selected { background: #e8b560; color: #1e2a0a; font-weight: bold; }
@@ -107,29 +102,28 @@
 </head>
 <body>
 <div class="container">
-    <!-- MAIN MENU / LORE SCREEN -->
+    <!-- MAIN MENU -->
     <div id="mainMenuScreen" class="lore-card">
         <div class="lore-title">🥔 THE POTATO APOCALYPSE 🥔</div>
         <div class="lore-text">
             <p><strong>Year 2026.</strong> A mysterious blight has destroyed <strong>99% of the world's potato harvest</strong>.</p>
             <p>🇧🇾 <strong>Belarus</strong> — the land that runs on potatoes — is on the brink of collapse.</p>
             <p>A secret bunker named <strong>"Bulba-1"</strong> has been built deep underground.<br>
-            <strong>Only 5 people</strong> can enter. The rule? <strong>You must prove your Belarusian roots AND your survival skills.</strong></p>
+            <strong>Only 5 people</strong> can enter. You must prove your Belarusian roots!</p>
         </div>
         
         <div class="rules-box">
-            <h3>📜 RULES OF THE BUNKER</h3>
+            <h3>📜 RULES</h3>
             <ul>
-                <li><strong>Round 1 - Identity Check:</strong> Each player introduces themselves and proves their Belarusian roots.</li>
-                <li><strong>Round 2 - Crisis:</strong> A random disaster occurs. Each player suggests a solution using their unique skill.</li>
-                <li><strong>Final Vote:</strong> Players vote for the LEAST convincing Belarusian. That person is banished!</li>
-                <li><strong>Truth Revealed:</strong> The banished player's real identity is shown.</li>
+                <li><strong>Round 1:</strong> Introduce yourself and prove your Belarusian roots</li>
+                <li><strong>Round 2:</strong> Crisis! Suggest a solution using your skill</li>
+                <li><strong>Final Vote:</strong> Vote out the least convincing Belarusian</li>
             </ul>
         </div>
         
         <div class="mode-selector">
-            <button id="soloModeBtn" class="mode-btn active">🤖 SOLO MODE (vs Bots)</button>
-            <button id="multiModeBtn" class="mode-btn">👥 MULTIPLAYER (with Friends)</button>
+            <button id="soloModeBtn" class="mode-btn active">🤖 SOLO MODE</button>
+            <button id="multiModeBtn" class="mode-btn">👥 MULTIPLAYER</button>
         </div>
         
         <div class="flex-center">
@@ -137,14 +131,14 @@
         </div>
     </div>
 
-    <!-- SOLO MODE LOBBY -->
+    <!-- SOLO LOBBY -->
     <div id="soloLobbyScreen" style="display: none;">
         <div class="panel">
             <h2>🤖 SOLO MODE: You vs 5 Bots</h2>
-            <p>You'll play against 5 AI opponents. Each bot has a unique character card.</p>
+            <p>Play against 5 AI opponents. Each bot has a unique character card.</p>
             <div class="flex-center">
                 <button id="startSoloGameBtn" class="btn btn-success">▶ START SOLO GAME</button>
-                <button id="backToMenuFromSolo" class="btn btn-danger">← BACK TO MENU</button>
+                <button id="backToMenuFromSolo" class="btn btn-danger">← BACK</button>
             </div>
         </div>
     </div>
@@ -154,21 +148,21 @@
         <div class="panel">
             <h2>👥 MULTIPLAYER MODE</h2>
             <div class="flex-center" style="gap: 20px; flex-wrap: wrap;">
-                <button id="createRoomBtn" class="btn">✨ CREATE NEW ROOM</button>
-                <div style="margin-top: 10px;">
+                <button id="createRoomBtn" class="btn">✨ CREATE ROOM</button>
+                <div>
                     <input type="text" id="joinCodeInput" placeholder="Room Code">
                     <input type="text" id="playerNameInput" placeholder="Your Name">
-                    <button id="joinRoomBtn" class="btn">🚪 JOIN ROOM</button>
+                    <button id="joinRoomBtn" class="btn">🚪 JOIN</button>
                 </div>
             </div>
             <div id="lobbyError" style="color: #ffb6a3; margin-top: 15px;"></div>
-            <div class="flex-center" style="margin-top: 20px;">
-                <button id="backToMenuFromMulti" class="btn btn-danger">← BACK TO MENU</button>
+            <div class="flex-center">
+                <button id="backToMenuFromMulti" class="btn btn-danger">← BACK</button>
             </div>
         </div>
     </div>
 
-    <!-- WAITING ROOM (Multiplayer) -->
+    <!-- WAITING ROOM -->
     <div id="waitingScreen" style="display: none;">
         <div class="panel">
             <h3>🏠 Room: <span id="roomCodeDisplay"></span></h3>
@@ -185,105 +179,84 @@
         </div>
     </div>
 
-    <!-- GAME SCREEN (shared for both modes) -->
+    <!-- GAME SCREEN -->
     <div id="gameScreen" style="display: none;">
         <div class="flex-center">
             <div class="timer" id="timerDisplay">⏱️ 10:00</div>
         </div>
-
         <div class="game-layout">
             <div class="panel">
-                <h3>🎴 YOUR SECRET IDENTITY</h3>
+                <h3>🎴 YOUR CARD</h3>
                 <div id="playerCardArea"></div>
-                <div class="flex-center" style="margin-top: 15px;">
-                    <button id="revealCardBtn" class="btn">👁️ Reveal / Hide</button>
-                    <button id="copyCardBtn" class="btn">📋 Copy Card</button>
+                <div class="flex-center">
+                    <button id="revealCardBtn" class="btn">👁️ Reveal/Hide</button>
+                    <button id="copyCardBtn" class="btn">📋 Copy</button>
                 </div>
             </div>
-
             <div class="panel">
-                <h3>💬 BUNKER RADIO — CHAT</h3>
+                <h3>💬 CHAT</h3>
                 <div class="chat-box" id="gameChatMessages"></div>
                 <div class="chat-input-area">
-                    <input type="text" id="gameChatInput" placeholder="Type your message...">
+                    <input type="text" id="gameChatInput" placeholder="Type message...">
                     <button id="gameSendChatBtn" class="btn">Send</button>
                 </div>
-                <div id="votingPanel" style="display: none; margin-top: 20px;">
-                    <h3>🗳️ FINAL VOTE</h3>
+                <div id="votingPanel" style="display: none;">
+                    <h3>🗳️ VOTE</h3>
                     <div id="voteButtonsContainer" class="vote-buttons"></div>
-                    <button id="submitVoteBtn" class="btn btn-danger">✅ SUBMIT MY VOTE</button>
+                    <button id="submitVoteBtn" class="btn btn-danger">SUBMIT VOTE</button>
                 </div>
             </div>
         </div>
-
-        <div class="flex-center" style="margin-top: 15px; gap: 15px;">
+        <div class="flex-center">
             <button id="nextPhaseBtn" class="btn">⏩ NEXT PHASE</button>
-            <button id="exitGameBtn" class="btn btn-danger">🚪 Exit Game</button>
+            <button id="exitGameBtn" class="btn btn-danger">EXIT</button>
         </div>
-
         <div id="outcomePanel" class="panel hidden">
             <h2 id="outcomeTitle"></h2>
             <p id="outcomeText"></p>
-            <button id="playAgainBtn" class="btn btn-success">🎮 PLAY AGAIN</button>
+            <button id="playAgainBtn" class="btn btn-success">PLAY AGAIN</button>
         </div>
     </div>
 </div>
 
 <script src="/socket.io/socket.io.js"></script>
 <script>
-    // ============ COMMON DATA ============
+    // CARDS
     const FULL_DECK = [
-        { category: "NATIVE", name: "Aliaksandr, tractor driver", roots: "Born near Minsk", skill: "Fixes any tractor", phrase: "Draniki for life!" },
-        { category: "NATIVE", name: "Hanna, beekeeper", roots: "Grandfather was Count's forester", skill: "Healing honey", phrase: "Where there's honey, there's life" },
-        { category: "NATIVE", name: "Volha, shop assistant", roots: "Grandma at Komarowski Market", skill: "Gets any item", phrase: "No queue for true Belarusians" },
-        { category: "NATIVE", name: "Mikhas, potato breeder", roots: "Created Krynitsa-2020", skill: "Grows potatoes on concrete", phrase: "Potato is our mother!" },
-        { category: "NATIVE", name: "Vera, librarian", roots: "Great-grandfather friends with Yanka Kupala", skill: "Recites classic poems", phrase: "Read Kupala? True Belarusian!" },
-        { category: "HOLLYWOOD", name: "Harrison Ford", roots: "Grandparents from MINSK", skill: "Flies planes, uses whip", phrase: "Crystal Skull near Minsk!" },
-        { category: "HOLLYWOOD", name: "Scarlett Johansson", roots: "Great-grandfather from NESVIZH", skill: "Spy skills", phrase: "Belarusian Black Widow" },
-        { category: "HOLLYWOOD", name: "Kirk Douglas", roots: "Born in CHAUSY, Mogilev", skill: "Spartacus charisma", phrase: "Spartacus from Mogilev!" },
-        { category: "HOLLYWOOD", name: "Ralph Lauren", roots: "Father from PINSK, mother from GRODNO", skill: "Sews clothes", phrase: "Polo means field" },
-        { category: "HOLLYWOOD", name: "Lisa Kudrow", roots: "Ancestors from ILYA village", skill: "Sings, reads potato peels", phrase: "Grandma taught me to survive" },
-        { category: "IMPOSTOR", name: "Tom Cruise", roots: "NO Belarusian roots!", skill: "Runs up walls", phrase: "I jumped over Minsk! In simulator" },
-        { category: "IMPOSTOR", name: "Angelina Jolie", roots: "NO roots!", skill: "Adopts things", phrase: "I adopted a Belarusian potato" },
-        { category: "IMPOSTOR", name: "Leonardo DiCaprio", roots: "NO roots!", skill: "Fake accent", phrase: "I filmed The Revenant in Belarus?" },
-        { category: "COMIC", name: "Dzmitry, TikTok blogger", roots: "Thinks he's Belarusian", skill: "Makes viral videos", phrase: "Subscribe for survival tips" },
-        { category: "COMIC", name: "Talking potato", roots: "It IS a potato", skill: "Can be eaten", phrase: "Don't eat me, I can still grow!" }
+        { category: "NATIVE", name: "Aliaksandr, tractor driver", roots: "Born near Minsk", skill: "Fixes tractors", phrase: "Draniki for life!" },
+        { category: "NATIVE", name: "Hanna, beekeeper", roots: "Forester's granddaughter", skill: "Healing honey", phrase: "Honey = life" },
+        { category: "NATIVE", name: "Volha, shop assistant", roots: "Komarowski Market", skill: "Gets any item", phrase: "No queue for true Belarusians" },
+        { category: "HOLLYWOOD", name: "Harrison Ford", roots: "Grandparents from MINSK", skill: "Flies planes", phrase: "Crystal Skull near Minsk!" },
+        { category: "HOLLYWOOD", name: "Scarlett Johansson", roots: "From NESVIZH", skill: "Spy skills", phrase: "Belarusian Black Widow" },
+        { category: "HOLLYWOOD", name: "Kirk Douglas", roots: "Born in CHAUSY", skill: "Charisma", phrase: "Spartacus from Mogilev!" },
+        { category: "IMPOSTOR", name: "Tom Cruise", roots: "NO roots!", skill: "Runs up walls", phrase: "I jumped over Minsk! In simulator" },
+        { category: "IMPOSTOR", name: "Angelina Jolie", roots: "NO roots!", skill: "Adopts", phrase: "I adopted a Belarusian potato" },
+        { category: "COMIC", name: "Dzmitry, TikTok blogger", roots: "Thinks he's Belarusian", skill: "Viral videos", phrase: "Subscribe!" }
     ];
     
-    const CRISES = [
-        "🥔 The salt for pickling lard has run out!",
-        "🐀 A giant rodent is chewing through the potato supply!",
-        "🥬 Someone stole the secret jar of fermented cabbage!",
-        "☢️ Radiation leak detected – only potato peels for protection!",
-        "🚰 The water filter broke. All you have is potato juice!"
-    ];
+    const CRISES = ["Salt ran out!", "Rodent eating potatoes!", "Cabbage stolen!", "Radiation leak!", "Water filter broke!"];
     
-    // ============ GLOBAL STATE ============
-    let currentMode = "solo"; // solo or multiplayer
-    let gameActive = false;
-    let currentGameData = null;
-    let timerInterval = null;
+    function escapeHtml(s) { if(!s) return ''; return s.replace(/[&<>]/g, m => m==='&'?'&amp;':m==='<'?'&lt;':'&gt;'); }
     
-    // Multiplayer specific
+    // DOM elements
+    const mainMenu = document.getElementById('mainMenuScreen');
+    const soloLobby = document.getElementById('soloLobbyScreen');
+    const multiLobby = document.getElementById('multiLobbyScreen');
+    const waiting = document.getElementById('waitingScreen');
+    const gameScreenDiv = document.getElementById('gameScreen');
+    
+    let currentMode = "solo";
+    let soloGame = null;
+    let soloTimer = null;
+    
+    // Multiplayer vars
     let socket = null;
     let currentRoom = null;
     let myName = null;
     let isGameMaster = false;
     let myVote = null;
     
-    // Solo specific
-    let soloGame = null;
-    
-    // DOM elements
-    const mainMenuScreen = document.getElementById('mainMenuScreen');
-    const soloLobbyScreen = document.getElementById('soloLobbyScreen');
-    const multiLobbyScreen = document.getElementById('multiLobbyScreen');
-    const waitingScreen = document.getElementById('waitingScreen');
-    const gameScreen = document.getElementById('gameScreen');
-    
-    // Helper functions
-    function escapeHtml(s) { if(!s) return ''; return s.replace(/[&<>]/g, m => m==='&'?'&amp;':m==='<'?'&lt;':'&gt;'); }
-    
+    // Helper: add message to game chat
     function addGameChat(sender, msg) {
         const container = document.getElementById("gameChatMessages");
         if(!container) return;
@@ -294,113 +267,87 @@
         div.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
     }
     
-    function formatTime(sec) { return `${Math.floor(sec/60)}:${(sec%60).toString().padStart(2,'0')}`; }
-    function updateTimerUI(seconds) { 
-        const timerDiv = document.getElementById("timerDisplay");
-        if(timerDiv) timerDiv.innerHTML = `⏱️ ${formatTime(seconds)}`;
+    function addWaitingChat(sender, msg) {
+        const container = document.getElementById("waitingChat");
+        if(!container) return;
+        const div = document.createElement("div");
+        div.className = "chat-message";
+        div.innerHTML = `<strong>${escapeHtml(sender)}:</strong> ${escapeHtml(msg)}`;
+        container.appendChild(div);
+        div.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
     }
     
-    function stopTimer() { if(timerInterval) { clearInterval(timerInterval); timerInterval = null; } }
+    function formatTime(sec) { return `${Math.floor(sec/60)}:${(sec%60).toString().padStart(2,'0')}`; }
     
-    // ============ SOLO MODE ============
+    // ========== SOLO MODE ==========
     function startSoloGame() {
         let shuffled = [...FULL_DECK];
         for(let i=shuffled.length-1; i>0; i--) {
             const j = Math.floor(Math.random()*(i+1));
             [shuffled[i], shuffled[j]] = [shuffled[j], shuffled[i]];
         }
-        
-        const players = [{ name: "You", isBot: false, card: shuffled[0], votedFor: null }];
+        const players = [{ name: "You", isBot: false, card: shuffled[0] }];
         const botNames = ["Bot_Olga", "Bot_Dennis", "Bot_Svetlana", "Bot_Vlad", "Bot_Maria"];
-        for(let i=0; i<5; i++) players.push({ name: botNames[i], isBot: true, card: shuffled[i+1], votedFor: null });
+        for(let i=0; i<5; i++) players.push({ name: botNames[i], isBot: true, card: shuffled[i+1] });
         
         soloGame = {
-            active: true,
             players: players,
             myCard: players[0].card,
             phase: "identity",
             votes: {},
             timeLeft: 600,
-            crisis: CRISES[Math.floor(Math.random() * CRISES.length)],
-            timerInterval: null
+            crisis: CRISES[Math.floor(Math.random() * CRISES.length)]
         };
         
-        // Display card
-        const mc = soloGame.myCard;
         document.getElementById("playerCardArea").innerHTML = `<div class="card" id="myCardDiv">
-            <div class="badge">${escapeHtml(mc.category)}</div>
-            <h3>${escapeHtml(mc.name)}</h3>
-            <p><strong>🥔 Roots:</strong> ${escapeHtml(mc.roots)}</p>
-            <p><strong>🛠️ Skill:</strong> ${escapeHtml(mc.skill)}</p>
-            <p><strong>💬 Phrase:</strong> "${escapeHtml(mc.phrase)}"</p>
+            <div class="badge">${escapeHtml(soloGame.myCard.category)}</div>
+            <h3>${escapeHtml(soloGame.myCard.name)}</h3>
+            <p><strong>🥔 Roots:</strong> ${escapeHtml(soloGame.myCard.roots)}</p>
+            <p><strong>🛠️ Skill:</strong> ${escapeHtml(soloGame.myCard.skill)}</p>
+            <p><strong>💬 Phrase:</strong> "${escapeHtml(soloGame.myCard.phrase)}"</p>
         </div>`;
         
         document.getElementById("gameChatMessages").innerHTML = "";
         document.getElementById("votingPanel").style.display = "none";
         document.getElementById("outcomePanel").classList.add("hidden");
         
-        addGameChat("📢 SYSTEM", "🥔 SOLO MODE - GAME STARTED!");
-        addGameChat("📢 SYSTEM", "🌍 The potato apocalypse is here. Prove your roots to survive!");
-        addGameChat("📢 SYSTEM", "🎭 ROUND 1: IDENTITY CHECK - Introduce yourself in chat!");
+        addGameChat("📢 SYSTEM", "SOLO MODE - GAME STARTED!");
+        addGameChat("📢 SYSTEM", "Round 1: Introduce yourself in chat!");
         
-        // Bots introduce themselves
         let delay = 2000;
         soloGame.players.forEach(p => {
             if(p.isBot) {
                 setTimeout(() => {
-                    addGameChat(p.name, `I am ${p.card.name}. My roots: ${p.card.roots.substring(0,80)}. ${p.card.phrase}`);
+                    addGameChat(p.name, `I am ${p.card.name}. Roots: ${p.card.roots}. ${p.card.phrase}`);
                 }, delay);
-                delay += 3500;
+                delay += 3000;
             }
         });
         
-        setTimeout(() => {
-            addGameChat("📢 SYSTEM", "💬 YOUR TURN! Type your introduction in chat. Tell everyone about your roots and skill!");
-        }, delay + 500);
-        
-        startSoloTimer();
-    }
-    
-    function startSoloTimer() {
-        stopTimer();
-        timerInterval = setInterval(() => {
-            if(soloGame && soloGame.active) {
-                if(soloGame.timeLeft <= 1) {
-                    stopTimer();
-                    addGameChat("📢 SYSTEM", "⏰ TIME'S UP! Moving to next phase...");
+        if(soloTimer) clearInterval(soloTimer);
+        soloTimer = setInterval(() => {
+            if(soloGame && soloGame.timeLeft > 0) {
+                soloGame.timeLeft--;
+                document.getElementById("timerDisplay").innerHTML = `⏱️ ${formatTime(soloGame.timeLeft)}`;
+                if(soloGame.timeLeft <= 0) {
+                    clearInterval(soloTimer);
+                    addGameChat("📢 SYSTEM", "Time's up! Moving to crisis...");
                     soloNextPhase();
-                } else {
-                    soloGame.timeLeft--;
-                    updateTimerUI(soloGame.timeLeft);
                 }
             }
         }, 1000);
-        updateTimerUI(soloGame.timeLeft);
     }
     
     function soloNextPhase() {
-        if(!soloGame || !soloGame.active) return;
-        
         if(soloGame.phase === "identity") {
             soloGame.phase = "crisis";
             addGameChat("📢 SYSTEM", `🔥 CRISIS: ${soloGame.crisis}`);
-            addGameChat("📢 SYSTEM", "🎯 ROUND 2: Suggest a solution using your skill!");
-            
-            let delay = 2000;
-            soloGame.players.forEach(p => {
-                if(p.isBot) {
-                    setTimeout(() => {
-                        addGameChat(p.name, `As ${p.card.name}, I use my ${p.card.skill.toLowerCase()}. ${p.card.phrase.substring(0,60)}`);
-                    }, delay);
-                    delay += 3500;
-                }
-            });
+            addGameChat("📢 SYSTEM", "Suggest a solution using your skill!");
             setTimeout(() => {
-                addGameChat("📢 SYSTEM", "🗳️ Now it's time to VOTE for the LEAST convincing Belarusian!");
+                addGameChat("📢 SYSTEM", "Time to vote!");
                 startSoloVoting();
-            }, delay + 2000);
-        }
-        else if(soloGame.phase === "crisis") {
+            }, 8000);
+        } else if(soloGame.phase === "crisis") {
             startSoloVoting();
         }
     }
@@ -422,7 +369,7 @@
             container.appendChild(btn);
         });
         document.getElementById("votingPanel").style.display = "block";
-        addGameChat("📢 SYSTEM", "🗳️ VOTE: Who should be LEFT OUTSIDE? (least convincing Belarusian roots)");
+        addGameChat("📢 SYSTEM", "VOTE: Who should be banished?");
         
         setTimeout(() => {
             if(soloGame && soloGame.phase === "voting") {
@@ -431,60 +378,41 @@
                         const others = soloGame.players.filter(o => o.name !== p.name);
                         const vote = others[Math.floor(Math.random() * others.length)].name;
                         soloGame.votes[p.name] = vote;
-                        addGameChat(p.name, `I vote for ${vote}.`);
+                        addGameChat(p.name, `I vote for ${vote}`);
                     }
                 });
-                addGameChat("📢 SYSTEM", "All bots have voted! Submit your vote now.");
+                addGameChat("📢 SYSTEM", "All bots voted! Submit your vote.");
             }
         }, 15000);
     }
     
     function submitSoloVote() {
-        if(!soloGame || soloGame.phase !== "voting") {
-            addGameChat("📢 SYSTEM", "Not voting phase yet!");
-            return;
-        }
         if(!soloGame.votes.humanVote) {
-            addGameChat("📢 SYSTEM", "Please select someone to vote out!");
+            addGameChat("📢 SYSTEM", "Select someone to vote out!");
             return;
         }
-        
         const counts = {};
         for(let [voter, target] of Object.entries(soloGame.votes)) {
             if(target) counts[target] = (counts[target] || 0) + 1;
         }
-        
-        let eliminated = null, maxVotes = -1;
-        for(let [player, count] of Object.entries(counts)) {
-            if(count > maxVotes) { maxVotes = count; eliminated = player; }
-        }
+        let eliminated = null, maxV = -1;
+        for(let [p,c] of Object.entries(counts)) if(c > maxV) { maxV = c; eliminated = p; }
         
         if(eliminated) {
+            addGameChat("📢 SYSTEM", `💀 ${eliminated} is BANISHED!`);
             const eliminatedPlayer = soloGame.players.find(p => p.name === eliminated);
-            addGameChat("📢 SYSTEM", `💀 ${eliminated} has been BANISHED! 💀`);
             if(eliminatedPlayer?.card) {
-                addGameChat("📢 SYSTEM", `📜 Revealed: ${eliminatedPlayer.card.name} - ${eliminatedPlayer.card.roots.substring(0,100)}`);
+                addGameChat("📢 SYSTEM", `Revealed: ${eliminatedPlayer.card.name} - ${eliminatedPlayer.card.roots}`);
             }
-            
-            let outcomeTitle, outcomeText;
-            if(eliminated === "You") {
-                outcomeTitle = "💔 YOU WERE BANISHED 💔";
-                outcomeText = "The group didn't believe your Belarusian roots. You walk into the potato wasteland...";
-            } else {
-                outcomeTitle = "🏆 YOU SURVIVED! 🏆";
-                outcomeText = `You survived! ${eliminated} was banished. The bunker lives on.`;
-            }
-            document.getElementById("outcomeTitle").innerText = outcomeTitle;
-            document.getElementById("outcomeText").innerHTML = outcomeText;
+            document.getElementById("outcomeTitle").innerText = eliminated === "You" ? "💔 YOU WERE BANISHED" : "🏆 YOU SURVIVED!";
+            document.getElementById("outcomeText").innerHTML = eliminated === "You" ? "The group didn't believe your roots." : `${eliminated} was banished. The bunker survives!`;
             document.getElementById("outcomePanel").classList.remove("hidden");
         }
-        
         document.getElementById("votingPanel").style.display = "none";
-        stopTimer();
-        soloGame.active = false;
+        if(soloTimer) clearInterval(soloTimer);
     }
     
-    // ============ MULTIPLAYER MODE ============
+    // ========== MULTIPLAYER ==========
     function initSocket() {
         if(socket) socket.disconnect();
         socket = io();
@@ -500,22 +428,20 @@
                 <h3>${escapeHtml(card.name)}</h3>
                 <p><strong>🥔 Roots:</strong> ${escapeHtml(card.roots)}</p>
                 <p><strong>🛠️ Skill:</strong> ${escapeHtml(card.skill)}</p>
-                <p><strong>💬 Phrase:</strong> "${escapeHtml(card.phrase)}"</p>
             </div>`;
         });
         
-        socket.on('game-started', (players, crisis) => {
-            waitingScreen.style.display = "none";
-            gameScreen.style.display = "block";
-            addGameChat("📢 SYSTEM", "🥔 GAME STARTED! Round 1: Identity Check - Prove your Belarusian roots!");
+        socket.on('game-started', () => {
+            waiting.style.display = "none";
+            gameScreenDiv.style.display = "block";
+            addGameChat("📢 SYSTEM", "GAME STARTED! Round 1: Prove your roots!");
         });
         
         socket.on('phase-change', (phase) => {
             if(phase === 'crisis') {
-                addGameChat("📢 SYSTEM", `🔥 CRISIS: ${CRISES[Math.floor(Math.random()*CRISES.length)]}`);
-                addGameChat("📢 SYSTEM", "🎯 Suggest a solution using your skill!");
+                addGameChat("📢 SYSTEM", `🔥 CRISIS! Suggest a solution using your skill.`);
             } else if(phase === 'voting') {
-                addGameChat("📢 SYSTEM", "🗳️ VOTING TIME! Choose who should be banished!");
+                addGameChat("📢 SYSTEM", "VOTE: Who should be banished?");
                 document.getElementById("votingPanel").style.display = "block";
                 const container = document.getElementById("voteButtonsContainer");
                 container.innerHTML = "";
@@ -537,30 +463,17 @@
         });
         
         socket.on('vote-result', (eliminated, card) => {
-            addGameChat("📢 SYSTEM", `💀 ${eliminated} has been BANISHED! 💀`);
-            if(card) addGameChat("📢 SYSTEM", `📜 Revealed: ${card.name} - ${card.roots.substring(0,80)}`);
+            addGameChat("📢 SYSTEM", `💀 ${eliminated} is BANISHED!`);
+            if(card) addGameChat("📢 SYSTEM", `Revealed: ${card.name}`);
             document.getElementById("votingPanel").style.display = "none";
             document.getElementById("outcomePanel").classList.remove("hidden");
-            if(eliminated === myName) {
-                document.getElementById("outcomeTitle").innerText = "💔 YOU WERE BANISHED 💔";
-                document.getElementById("outcomeText").innerHTML = "The group didn't believe your Belarusian roots.";
-            } else {
-                document.getElementById("outcomeTitle").innerText = "🏆 YOU SURVIVED! 🏆";
-                document.getElementById("outcomeText").innerHTML = `You survived! ${eliminated} was banished.`;
-            }
-            if(timerInterval) clearInterval(timerInterval);
+            document.getElementById("outcomeTitle").innerText = eliminated === myName ? "💔 YOU WERE BANISHED" : "🏆 YOU SURVIVED!";
+            document.getElementById("outcomeText").innerHTML = eliminated === myName ? "The group didn't believe your roots." : `${eliminated} was banished.`;
         });
         
         socket.on('chat-message', (name, msg) => {
-            if(waitingScreen.style.display !== 'none') {
-                const container = document.getElementById("waitingChat");
-                if(container) {
-                    const div = document.createElement("div");
-                    div.className = "chat-message";
-                    div.innerHTML = `<strong>${escapeHtml(name)}:</strong> ${escapeHtml(msg)}`;
-                    container.appendChild(div);
-                    div.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
-                }
+            if(waiting.style.display !== 'none') {
+                addWaitingChat(name, msg);
             } else {
                 addGameChat(name, msg);
             }
@@ -576,11 +489,10 @@
             if(response.success) {
                 currentRoom = response.roomCode;
                 isGameMaster = true;
-                multiLobbyScreen.style.display = "none";
-                waitingScreen.style.display = "block";
+                multiLobby.style.display = "none";
+                waiting.style.display = "block";
                 document.getElementById("roomCodeDisplay").innerText = currentRoom;
                 document.getElementById("gmWaitingPanel").style.display = "block";
-                document.getElementById("lobbyError").innerText = `Room created! Code: ${currentRoom}. Share with friends!`;
                 socket.emit('join-room', currentRoom, name, () => {});
             }
         });
@@ -589,17 +501,14 @@
     function joinRoom() {
         const code = document.getElementById("joinCodeInput").value.trim().toUpperCase();
         const name = document.getElementById("playerNameInput").value.trim();
-        if(!code || !name) {
-            document.getElementById("lobbyError").innerText = "Enter room code and name";
-            return;
-        }
+        if(!code || !name) { document.getElementById("lobbyError").innerText = "Enter code and name"; return; }
         myName = name;
         if(!socket) initSocket();
         socket.emit('join-room', code, name, (response) => {
             if(response.success) {
                 currentRoom = code;
-                multiLobbyScreen.style.display = "none";
-                waitingScreen.style.display = "block";
+                multiLobby.style.display = "none";
+                waiting.style.display = "block";
                 document.getElementById("roomCodeDisplay").innerText = currentRoom;
             } else {
                 document.getElementById("lobbyError").innerText = response.error;
@@ -615,7 +524,6 @@
     
     function multiNextPhase() {
         if(isGameMaster && currentRoom && socket) {
-            if(document.getElementById("votingPanel").style.display !== 'none') return;
             socket.emit('next-phase', currentRoom, 'crisis');
         }
     }
@@ -624,48 +532,86 @@
         if(myVote && currentRoom && socket) {
             socket.emit('vote', currentRoom, myVote);
             document.getElementById("votingPanel").style.display = "none";
-            addGameChat("📢 SYSTEM", "Vote submitted! Waiting for others...");
+            addGameChat("📢 SYSTEM", "Vote submitted!");
         } else {
-            addGameChat("📢 SYSTEM", "Please select someone to vote for!");
+            addGameChat("📢 SYSTEM", "Select someone to vote for!");
         }
     }
     
-    function sendMultiChat(containerId, inputId) {
-        const input = document.getElementById(inputId);
-        const msg = input.value.trim();
+    function sendWaitingChat() {
+        const inp = document.getElementById("waitingChatInput");
+        const msg = inp.value.trim();
         if(msg && currentRoom && socket) {
             socket.emit('chat-message', currentRoom, myName, msg);
-            input.value = "";
+            inp.value = "";
         }
     }
     
-    // ============ UI NAVIGATION ============
-    let selectedMode = "solo";
+    function sendGameChat() {
+        const inp = document.getElementById("gameChatInput");
+        const msg = inp.value.trim();
+        if(msg && currentRoom && socket) {
+            socket.emit('chat-message', currentRoom, myName, msg);
+            inp.value = "";
+        }
+    }
     
+    // ========== EVENT LISTENERS ==========
     document.getElementById("soloModeBtn").onclick = () => {
-        selectedMode = "solo";
+        currentMode = "solo";
         document.getElementById("soloModeBtn").classList.add("active");
         document.getElementById("multiModeBtn").classList.remove("active");
     };
-    
     document.getElementById("multiModeBtn").onclick = () => {
-        selectedMode = "multiplayer";
+        currentMode = "multiplayer";
         document.getElementById("multiModeBtn").classList.add("active");
         document.getElementById("soloModeBtn").classList.remove("active");
     };
-    
     document.getElementById("startModeBtn").onclick = () => {
-        mainMenuScreen.style.display = "none";
-        if(selectedMode === "solo") {
-            soloLobbyScreen.style.display = "block";
-        } else {
-            multiLobbyScreen.style.display = "block";
+        mainMenu.style.display = "none";
+        if(currentMode === "solo") soloLobby.style.display = "block";
+        else multiLobby.style.display = "block";
+    };
+    document.getElementById("backToMenuFromSolo").onclick = () => {
+        soloLobby.style.display = "none";
+        mainMenu.style.display = "block";
+    };
+    document.getElementById("backToMenuFromMulti").onclick = () => {
+        multiLobby.style.display = "none";
+        mainMenu.style.display = "block";
+    };
+    document.getElementById("startSoloGameBtn").onclick = () => {
+        soloLobby.style.display = "none";
+        gameScreenDiv.style.display = "block";
+        startSoloGame();
+    };
+    document.getElementById("createRoomBtn").onclick = createRoom;
+    document.getElementById("joinRoomBtn").onclick = joinRoom;
+    document.getElementById("startGameWaitingBtn").onclick = startMultiGame;
+    document.getElementById("nextPhaseBtn").onclick = () => {
+        if(currentMode === "solo") soloNextPhase();
+        else multiNextPhase();
+    };
+    document.getElementById("submitVoteBtn").onclick = () => {
+        if(currentMode === "solo") submitSoloVote();
+        else submitMultiVote();
+    };
+    document.getElementById("exitWaitingBtn").onclick = () => location.reload();
+    document.getElementById("exitGameBtn").onclick = () => location.reload();
+    document.getElementById("playAgainBtn").onclick = () => location.reload();
+    document.getElementById("waitingSendBtn").onclick = sendWaitingChat;
+    document.getElementById("gameSendChatBtn").onclick = sendGameChat;
+    document.getElementById("revealCardBtn").onclick = () => {
+        const cardDiv = document.getElementById("myCardDiv");
+        if(cardDiv) cardDiv.classList.toggle("card-hidden");
+    };
+    document.getElementById("copyCardBtn").onclick = () => {
+        const cardDiv = document.getElementById("myCardDiv");
+        if(cardDiv) {
+            navigator.clipboard.writeText(cardDiv.innerText);
+            alert("Card copied!");
         }
     };
-    
-    document.getElementById("backToMenuFromSolo").onclick = () => {
-        soloLobbyScreen.style.display = "none";
-        mainMenuScreen.style.display = "block";
-    };
-    
-    document.getElementById("backToMenu
+</script>
+</body>
+</html>
