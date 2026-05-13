@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Bunker: Belarusian Roots</title>
+    <style>
+        body { font-family: Arial; background: #1a3a1a; color: white; text-align: center; padding: 20px; }
+        input, button { padding: 10px; margin: 5px; border-radius: 30px; border: none; }
+        button { background: #efbc6e; cursor: pointer; font-weight: bold; }
+        .panel { background: #2c2e24cc; padding: 20px; border-radius: 30px; margin: 20px auto; max-width: 500px; }
+    </style>
+</head>
+<body>
+<h1>🥔 BUNKER: BELARUSIAN ROOTS 🥔</h1>
+
+<div id="lobby" class="panel">
+    <h2>Multiplayer Mode</h2>
+    <button id="createBtn">✨ Create Room</button>
+    <div style="margin-top: 20px;">
+        <input type="text" id="roomCodeInput" placeholder="Room Code">
+        <input type="text" id="playerNameInput" placeholder="Your Name">
+        <button id="joinBtn">🚪 Join Room</button>
+    </div>
+    <div id="errorMsg" style="color: #ffb6a3; margin-top: 10px;"></div>
+</div>
+
+<div id="roomPanel" class="panel" style="display:none;">
+    <h3>Room: <span id="roomCode"></span></h3>
+    <div id="playersList"></div>
+    <button id="readyBtn">✅ Ready</button>
+    <div id="gameMasterPanel" style="display:none;">
+        <button id="startGameBtn">▶ Start Game</button>
+    </div>
+    <button id="exitBtn">Exit</button>
+</div>
+
+<div id="gamePanel" class="panel" style="display:none;">
+    <h2>🎴 YOUR CARD</h2>
+    <div id="cardArea"></div>
+    <button id="exitGameBtn">Exit Game</button>
+</div>
+
+<script src="/socket.io/socket.io.js"></script>
+<script>
+    let socket = io();
+    let currentRoom = null;
+    let myName = null;
+    let isGameMaster = false;
+
+    const cards = [
+        { name: "Aliaksandr", roots: "Born near Minsk", skill: "Fixes tractors" },
+        { name: "Harrison Ford", roots: "Grandparents from MINSK", skill: "Flies planes" },
+        { name: "Scarlett Johansson", roots: "From NESVIZH", skill: "Spy skills" }
+    ];
+
+    socket.on('players-update', (players) => {
+        document.getElementById("playersList").innerHTML = players.map(p => `<div>${p}</div>`).join('');
+    });
+
+    socket.on('game-started', () => {
+        document.getElementById("roomPanel").style.display = "none";
+        document.getElementById("gamePanel").style.display = "block";
+        const randomCard = cards[Math.floor(Math.random() * cards.length)];
+        document.getElementById("cardArea").innerHTML = `<div><b>${randomCard.name}</b><br>🌱 ${randomCard.roots}<br>🛠️ ${randomCard.skill}</div>`;
+    });
+
+    document.getElementById("createBtn").onclick = () => {
+        const name = prompt("Enter your name:", "Player");
+        if (!name) return;
+        myName = name;
+        socket.emit('create-room', name, (response) => {
+            if (response.success) {
+                currentRoom = response.roomCode;
+                isGameMaster = true;
+                document.getElementById("lobby").style.display = "none";
+                document.getElementById("roomPanel").style.display = "block";
+                document.getElementById("roomCode").innerText = currentRoom;
+                document.getElementById("gameMasterPanel").style.display = "block";
+            }
+        });
+    };
+
+    document.getElementById("joinBtn").onclick = () => {
+        const code = document.getElementById("roomCodeInput").value.trim().toUpperCase();
+        const name = document.getElementById("playerNameInput").value.trim();
+        if (!code || !name) return;
+        myName = name;
+        socket.emit('join-room', code, name, (response) => {
+            if (response.success) {
+                currentRoom = code;
+                document.getElementById("lobby").style.display = "none";
+                document.getElementById("roomPanel").style.display = "block";
+                document.getElementById("roomCode").innerText = currentRoom;
+            }
+        });
+    };
+
+    document.getElementById("startGameBtn").onclick = () => {
+        socket.emit('start-game', currentRoom);
+    };
+
+    document.getElementById("exitBtn").onclick = () => location.reload();
+    document.getElementById("exitGameBtn").onclick = () => location.reload();
+</script>
+</body>
+</html>
