@@ -2,106 +2,447 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
     <title>Bunker: Belarusian Roots</title>
     <style>
-        body { font-family: Arial; background: #1a3a1a; color: white; text-align: center; padding: 20px; }
-        input, button { padding: 10px; margin: 5px; border-radius: 30px; border: none; }
-        button { background: #efbc6e; cursor: pointer; font-weight: bold; }
-        .panel { background: #2c2e24cc; padding: 20px; border-radius: 30px; margin: 20px auto; max-width: 500px; }
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body {
+            background: linear-gradient(135deg, #0a1f0a 0%, #0d2e0d 50%, #0a1f0a 100%);
+            font-family: 'Segoe UI', system-ui, sans-serif;
+            min-height: 100vh;
+            color: #f5f0e0;
+            padding: 20px;
+        }
+        .container { max-width: 1400px; margin: 0 auto; }
+        
+        /* Lore Screen */
+        .lore-card {
+            background: linear-gradient(145deg, #1e2a1acc, #0f180fcc);
+            backdrop-filter: blur(12px);
+            border-radius: 48px;
+            padding: 40px 30px;
+            margin-bottom: 30px;
+            border: 2px solid #d4a54e;
+            text-align: center;
+            animation: fadeIn 1s ease;
+        }
+        @keyframes fadeIn { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: translateY(0); } }
+        .lore-title { font-size: 2.5rem; margin-bottom: 20px; color: #f3c26b; text-shadow: 2px 2px 0 #5a3a1a; }
+        .lore-text { font-size: 1.1rem; line-height: 1.6; max-width: 800px; margin: 0 auto; }
+        .rules-box { background: #00000055; border-radius: 30px; padding: 20px; margin: 25px auto; max-width: 700px; text-align: left; }
+        .rules-box h3 { color: #f3c26b; margin-bottom: 15px; }
+        .rules-box li { margin-left: 25px; margin-bottom: 8px; }
+        
+        .btn {
+            background: linear-gradient(145deg, #e8b560, #c9922e);
+            border: none;
+            padding: 12px 28px;
+            font-size: 1.1rem;
+            font-weight: bold;
+            border-radius: 60px;
+            cursor: pointer;
+            margin: 8px;
+            color: #1e2a0e;
+            transition: 0.2s;
+        }
+        .btn:active { transform: scale(0.97); }
+        .btn-danger { background: linear-gradient(145deg, #b5452c, #8b2e1a); color: white; }
+        .btn-success { background: linear-gradient(145deg, #4a8b2c, #2e6a1a); color: white; }
+        
+        .panel {
+            background: #1e2a1ccc;
+            backdrop-filter: blur(10px);
+            border-radius: 40px;
+            padding: 24px;
+            margin-bottom: 20px;
+        }
+        .game-layout { display: grid; grid-template-columns: 1fr 1fr; gap: 24px; }
+        @media (max-width: 900px) { .game-layout { grid-template-columns: 1fr; } }
+        
+        .chat-box {
+            background: #0a120acc;
+            border-radius: 28px;
+            height: 320px;
+            overflow-y: auto;
+            padding: 16px;
+            margin: 15px 0;
+            font-size: 0.9rem;
+        }
+        .chat-message { margin-bottom: 12px; padding-bottom: 8px; border-bottom: 1px solid #d4a54e33; }
+        .card {
+            background: #fffef5;
+            color: #2d3a1a;
+            border-radius: 32px;
+            padding: 24px;
+            border-left: 12px solid #e8b560;
+        }
+        .card-hidden { filter: blur(8px); background: #5a6e4a; color: #5a6e4a; cursor: pointer; text-align: center; padding: 50px; }
+        .card-hidden::after { content: "🔒 Click to reveal 🔒"; filter: blur(0); color: #ffefb0; display: block; font-weight: bold; }
+        .badge { background: #e8b560; display: inline-block; padding: 4px 12px; border-radius: 40px; font-size: 0.7rem; font-weight: bold; color: #1e2a0a; margin-right: 8px; }
+        .timer { font-size: 2.5rem; font-family: monospace; background: #00000088; display: inline-block; padding: 10px 30px; border-radius: 60px; letter-spacing: 5px; }
+        .vote-buttons { display: flex; flex-wrap: wrap; gap: 10px; margin: 15px 0; }
+        .vote-btn { background: #4a3a2a; color: white; padding: 8px 16px; border-radius: 40px; border: none; cursor: pointer; }
+        .vote-btn.selected { background: #e8b560; color: #1e2a0a; font-weight: bold; }
+        .flex-center { display: flex; justify-content: center; flex-wrap: wrap; }
+        .hidden { display: none; }
+        input { padding: 12px; border-radius: 60px; border: none; margin: 5px; flex: 1; }
+        .chat-input-area { display: flex; gap: 10px; margin-top: 10px; }
+        h2, h3 { color: #f3c26b; margin-bottom: 15px; }
     </style>
 </head>
 <body>
-<h1>🥔 BUNKER: BELARUSIAN ROOTS 🥔</h1>
-
-<div id="lobby" class="panel">
-    <h2>Multiplayer Mode</h2>
-    <button id="createBtn">✨ Create Room</button>
-    <div style="margin-top: 20px;">
-        <input type="text" id="roomCodeInput" placeholder="Room Code">
-        <input type="text" id="playerNameInput" placeholder="Your Name">
-        <button id="joinBtn">🚪 Join Room</button>
+<div class="container">
+    <!-- LORE / RULES SCREEN -->
+    <div id="loreScreen" class="lore-card">
+        <div class="lore-title">🥔 THE POTATO APOCALYPSE 🥔</div>
+        <div class="lore-text">
+            <p><strong>Year 2026.</strong> A mysterious blight has destroyed <strong>99% of the world's potato harvest</strong>.</p>
+            <p>🇧🇾 <strong>Belarus</strong> — the land that runs on potatoes — is on the brink of collapse.</p>
+            <p>A secret bunker named <strong>"Bulba-1"</strong> has been built deep underground.<br>
+            <strong>Only 5 people</strong> can enter. The rule? <strong>You must prove your Belarusian roots AND your survival skills.</strong></p>
+            <p>⭐ Hollywood stars with REAL Belarusian ancestry are desperate to get in.<br>
+            🎭 Impostors without roots will lie their way to survive.</p>
+        </div>
+        
+        <div class="rules-box">
+            <h3>📜 RULES OF THE BUNKER</h3>
+            <ul>
+                <li><strong>Round 1 - Identity Check:</strong> Each player introduces themselves and proves their Belarusian roots using their card.</li>
+                <li><strong>Round 2 - Crisis:</strong> A random disaster occurs. Each player suggests a solution using their unique skill.</li>
+                <li><strong>Final Vote:</strong> Players vote for the LEAST convincing Belarusian. That person is banished outside!</li>
+                <li><strong>Truth Revealed:</strong> The banished player's real identity is shown. Were they a true Belarusian or an impostor?</li>
+            </ul>
+        </div>
+        
+        <div class="flex-center">
+            <button id="startGameBtn" class="btn btn-success">🎮 ENTER THE BUNKER 🎮</button>
+        </div>
     </div>
-    <div id="errorMsg" style="color: #ffb6a3; margin-top: 10px;"></div>
-</div>
 
-<div id="roomPanel" class="panel" style="display:none;">
-    <h3>Room: <span id="roomCode"></span></h3>
-    <div id="playersList"></div>
-    <button id="readyBtn">✅ Ready</button>
-    <div id="gameMasterPanel" style="display:none;">
-        <button id="startGameBtn">▶ Start Game</button>
+    <!-- MAIN GAME SCREEN -->
+    <div id="gameScreen" style="display: none;">
+        <div class="flex-center">
+            <div class="timer" id="timerDisplay">⏱️ 10:00</div>
+        </div>
+
+        <div class="game-layout">
+            <!-- LEFT: Player Card -->
+            <div class="panel">
+                <h3>🎴 YOUR SECRET IDENTITY</h3>
+                <div id="playerCardArea"></div>
+                <div class="flex-center" style="margin-top: 15px;">
+                    <button id="revealCardBtn" class="btn">👁️ Reveal / Hide</button>
+                    <button id="copyCardBtn" class="btn">📋 Copy Card</button>
+                </div>
+            </div>
+
+            <!-- RIGHT: Chat + Voting -->
+            <div class="panel">
+                <h3>💬 BUNKER RADIO — CHAT</h3>
+                <div class="chat-box" id="chatMessages"></div>
+                <div class="chat-input-area">
+                    <input type="text" id="chatInput" placeholder="Type your message...">
+                    <button id="sendChatBtn" class="btn">Send</button>
+                </div>
+                <div id="votingPanel" style="display: none; margin-top: 20px;">
+                    <h3>🗳️ FINAL VOTE</h3>
+                    <p>Who has the <strong>LEAST convincing Belarusian roots?</strong> Vote them out!</p>
+                    <div id="voteButtonsContainer" class="vote-buttons"></div>
+                    <button id="submitVoteBtn" class="btn btn-danger">✅ SUBMIT MY VOTE</button>
+                </div>
+            </div>
+        </div>
+
+        <div class="flex-center" style="margin-top: 15px; gap: 15px;">
+            <button id="nextPhaseBtn" class="btn">⏩ NEXT PHASE (GM only)</button>
+            <button id="exitToLoreBtn" class="btn btn-danger">🚪 Exit Game</button>
+        </div>
+
+        <div id="outcomePanel" class="panel hidden">
+            <h2 id="outcomeTitle"></h2>
+            <p id="outcomeText"></p>
+            <button id="playAgainBtn" class="btn btn-success">🎮 PLAY AGAIN</button>
+        </div>
     </div>
-    <button id="exitBtn">Exit</button>
-</div>
-
-<div id="gamePanel" class="panel" style="display:none;">
-    <h2>🎴 YOUR CARD</h2>
-    <div id="cardArea"></div>
-    <button id="exitGameBtn">Exit Game</button>
 </div>
 
 <script src="/socket.io/socket.io.js"></script>
 <script>
-    let socket = io();
-    let currentRoom = null;
-    let myName = null;
-    let isGameMaster = false;
+    // ========== GAME STATE ==========
+    let currentGame = {
+        active: false,
+        players: [],
+        myCard: null,
+        phase: "identity",
+        votes: {},
+        timeLeft: 600,
+        timerInterval: null,
+        crisis: "",
+        eliminated: null
+    };
 
-    const cards = [
-        { name: "Aliaksandr", roots: "Born near Minsk", skill: "Fixes tractors" },
-        { name: "Harrison Ford", roots: "Grandparents from MINSK", skill: "Flies planes" },
-        { name: "Scarlett Johansson", roots: "From NESVIZH", skill: "Spy skills" }
+    const CRISES = [
+        "🥔 The salt for pickling lard has run out!",
+        "🐀 A giant rodent is chewing through the emergency potato supply!",
+        "🥬 Someone stole the secret jar of fermented cabbage!",
+        "☢️ Radiation leak detected – only potato peels for protection!",
+        "🚰 The water filter broke. All you have is potato juice!"
     ];
 
-    socket.on('players-update', (players) => {
-        document.getElementById("playersList").innerHTML = players.map(p => `<div>${p}</div>`).join('');
-    });
-
-    socket.on('game-started', () => {
-        document.getElementById("roomPanel").style.display = "none";
-        document.getElementById("gamePanel").style.display = "block";
-        const randomCard = cards[Math.floor(Math.random() * cards.length)];
-        document.getElementById("cardArea").innerHTML = `<div><b>${randomCard.name}</b><br>🌱 ${randomCard.roots}<br>🛠️ ${randomCard.skill}</div>`;
-    });
-
-    document.getElementById("createBtn").onclick = () => {
-        const name = prompt("Enter your name:", "Player");
-        if (!name) return;
-        myName = name;
-        socket.emit('create-room', name, (response) => {
-            if (response.success) {
-                currentRoom = response.roomCode;
-                isGameMaster = true;
-                document.getElementById("lobby").style.display = "none";
-                document.getElementById("roomPanel").style.display = "block";
-                document.getElementById("roomCode").innerText = currentRoom;
-                document.getElementById("gameMasterPanel").style.display = "block";
-            }
-        });
+    const DEATH_MESSAGES = {
+        "Harrison Ford": "Harrison Ford tried to whip the door open... it whipped back. 🕶️",
+        "Tom Cruise": "Tom Cruise ran so fast he ran into the wasteland. 🏃‍♂️💨",
+        "default": "{name} was banished. Last words: 'I should've learned Minsk geography...' 🥀"
     };
 
-    document.getElementById("joinBtn").onclick = () => {
-        const code = document.getElementById("roomCodeInput").value.trim().toUpperCase();
-        const name = document.getElementById("playerNameInput").value.trim();
-        if (!code || !name) return;
-        myName = name;
-        socket.emit('join-room', code, name, (response) => {
-            if (response.success) {
-                currentRoom = code;
-                document.getElementById("lobby").style.display = "none";
-                document.getElementById("roomPanel").style.display = "block";
-                document.getElementById("roomCode").innerText = currentRoom;
+    const FULL_DECK = [
+        { category: "NATIVE", name: "Aliaksandr, tractor driver", roots: "Born near Minsk", skill: "Fixes any tractor", phrase: "Draniki for life!" },
+        { category: "NATIVE", name: "Hanna, beekeeper", roots: "Grandfather was Count's forester", skill: "Healing honey", phrase: "Where there's honey, there's life" },
+        { category: "NATIVE", name: "Volha, shop assistant", roots: "Grandma at Komarowski Market", skill: "Gets any item", phrase: "No queue for true Belarusians" },
+        { category: "HOLLYWOOD", name: "Harrison Ford", roots: "Grandparents from MINSK", skill: "Flies planes, uses whip", phrase: "Crystal Skull near Minsk!" },
+        { category: "HOLLYWOOD", name: "Scarlett Johansson", roots: "Great-grandfather from NESVIZH", skill: "Spy skills", phrase: "Belarusian Black Widow" },
+        { category: "HOLLYWOOD", name: "Kirk Douglas", roots: "Born in CHAUSY, Mogilev", skill: "Spartacus charisma", phrase: "Spartacus from Mogilev!" },
+        { category: "IMPOSTOR", name: "Tom Cruise", roots: "NO Belarusian roots!", skill: "Runs up walls", phrase: "I jumped over Minsk! In simulator" },
+        { category: "IMPOSTOR", name: "Angelina Jolie", roots: "NO roots!", skill: "Adopts things", phrase: "I adopted a Belarusian potato" },
+        { category: "COMIC", name: "Dzmitry, TikTok blogger", roots: "Thinks he's Belarusian", skill: "Makes viral videos", phrase: "Subscribe for survival tips" }
+    ];
+
+    // Helper functions
+    function escapeHtml(s) { if(!s) return ''; return s.replace(/[&<>]/g, m => m==='&'?'&amp;':m==='<'?'&lt;':'&gt;'); }
+    
+    function addChatMessage(sender, msg) {
+        const chat = document.getElementById("chatMessages");
+        const div = document.createElement("div");
+        div.className = "chat-message";
+        div.innerHTML = `<strong>${escapeHtml(sender)}:</strong> ${escapeHtml(msg)}`;
+        chat.appendChild(div);
+        div.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+    }
+
+    function formatTime(sec) { return `${Math.floor(sec/60)}:${(sec%60).toString().padStart(2,'0')}`; }
+    function updateTimerUI() { document.getElementById("timerDisplay").innerHTML = `⏱️ ${formatTime(currentGame.timeLeft)}`; }
+
+    function getDeathMessage(name, cardName) {
+        for(let [key, msg] of Object.entries(DEATH_MESSAGES)) {
+            if(cardName && cardName.includes(key)) return msg.replace("{name}", name);
+        }
+        return DEATH_MESSAGES["default"].replace("{name}", name);
+    }
+
+    // Start solo game
+    function startSoloGame() {
+        let shuffled = [...FULL_DECK];
+        for(let i=shuffled.length-1; i>0; i--) {
+            const j = Math.floor(Math.random()*(i+1));
+            [shuffled[i], shuffled[j]] = [shuffled[j], shuffled[i]];
+        }
+        
+        const players = [{ name: "You", isBot: false, card: shuffled[0], votedFor: null }];
+        const botNames = ["Olga", "Dennis", "Svetlana", "Vlad", "Maria"];
+        for(let i=0; i<5; i++) players.push({ name: botNames[i], isBot: true, card: shuffled[i+1], votedFor: null });
+        
+        currentGame = {
+            active: true,
+            players: players,
+            myCard: players[0].card,
+            phase: "identity",
+            votes: {},
+            timeLeft: 600,
+            timerInterval: null,
+            crisis: CRISES[Math.floor(Math.random() * CRISES.length)],
+            eliminated: null
+        };
+        
+        // Display player card
+        const mc = currentGame.myCard;
+        document.getElementById("playerCardArea").innerHTML = `<div class="card" id="myCardDiv">
+            <div class="badge">${escapeHtml(mc.category)}</div>
+            <h3>${escapeHtml(mc.name)}</h3>
+            <p><strong>🥔 Roots:</strong> ${escapeHtml(mc.roots)}</p>
+            <p><strong>🛠️ Skill:</strong> ${escapeHtml(mc.skill)}</p>
+            <p><strong>💬 Phrase:</strong> "${escapeHtml(mc.phrase)}"</p>
+        </div>`;
+        
+        document.getElementById("chatMessages").innerHTML = "";
+        document.getElementById("votingPanel").style.display = "none";
+        document.getElementById("outcomePanel").classList.add("hidden");
+        
+        addChatMessage("📢 SYSTEM", "🥔 BUNKER: BELARUSIAN ROOTS - GAME STARTED!");
+        addChatMessage("📢 SYSTEM", "🌍 The potato apocalypse is here. Prove your roots to survive!");
+        addChatMessage("📢 SYSTEM", "🎭 ROUND 1: IDENTITY CHECK - Introduce yourself in chat!");
+        
+        // Bots introduce themselves
+        let delay = 2000;
+        currentGame.players.forEach(p => {
+            if(p.isBot) {
+                setTimeout(() => {
+                    addChatMessage(p.name, `I am ${p.card.name}. My roots: ${p.card.roots.substring(0,80)}. ${p.card.phrase}`);
+                }, delay);
+                delay += 3500;
             }
         });
-    };
-
+        
+        setTimeout(() => {
+            addChatMessage("📢 SYSTEM", "💬 YOUR TURN! Type your introduction in chat. Tell everyone about your roots and skill!");
+        }, delay + 500);
+        
+        startTimer();
+        updateTimerUI();
+    }
+    
+    function startTimer() {
+        if(currentGame.timerInterval) clearInterval(currentGame.timerInterval);
+        currentGame.timerInterval = setInterval(() => {
+            if(currentGame.timeLeft <= 1) {
+                clearInterval(currentGame.timerInterval);
+                addChatMessage("📢 SYSTEM", "⏰ TIME'S UP! Moving to next phase...");
+                nextPhase();
+            } else {
+                currentGame.timeLeft--;
+                updateTimerUI();
+            }
+        }, 1000);
+    }
+    
+    function nextPhase() {
+        if(!currentGame.active) return;
+        
+        if(currentGame.phase === "identity") {
+            currentGame.phase = "crisis";
+            addChatMessage("📢 SYSTEM", `🔥 CRISIS: ${currentGame.crisis}`);
+            addChatMessage("📢 SYSTEM", "🎯 ROUND 2: Suggest a solution using your skill!");
+            
+            let delay = 2000;
+            currentGame.players.forEach(p => {
+                if(p.isBot) {
+                    setTimeout(() => {
+                        addChatMessage(p.name, `As ${p.card.name}, I use my ${p.card.skill.toLowerCase()}. ${p.card.phrase.substring(0,60)}`);
+                    }, delay);
+                    delay += 3500;
+                }
+            });
+            setTimeout(() => {
+                addChatMessage("📢 SYSTEM", "🗳️ Now it's time to VOTE for the LEAST convincing Belarusian!");
+                startVotingPhase();
+            }, delay + 2000);
+        }
+        else if(currentGame.phase === "crisis") {
+            startVotingPhase();
+        }
+    }
+    
+    function startVotingPhase() {
+        currentGame.phase = "voting";
+        const voteContainer = document.getElementById("voteButtonsContainer");
+        voteContainer.innerHTML = "";
+        currentGame.players.forEach(p => {
+            const btn = document.createElement("button");
+            btn.innerText = p.name;
+            btn.className = "vote-btn";
+            btn.onclick = () => {
+                document.querySelectorAll(".vote-btn").forEach(b => b.classList.remove("selected"));
+                btn.classList.add("selected");
+                currentGame.votes.humanVote = p.name;
+                addChatMessage("You", `I vote for ${p.name}`);
+            };
+            voteContainer.appendChild(btn);
+        });
+        document.getElementById("votingPanel").style.display = "block";
+        addChatMessage("📢 SYSTEM", "🗳️ VOTE: Who should be LEFT OUTSIDE? (least convincing Belarusian roots)");
+        
+        setTimeout(() => {
+            if(currentGame.phase === "voting") {
+                currentGame.players.forEach(p => {
+                    if(p.isBot && !currentGame.votes[p.name]) {
+                        const others = currentGame.players.filter(o => o.name !== p.name);
+                        const vote = others[Math.floor(Math.random() * others.length)].name;
+                        currentGame.votes[p.name] = vote;
+                        addChatMessage(p.name, `I vote for ${vote}.`);
+                    }
+                });
+                addChatMessage("📢 SYSTEM", "All bots have voted! Submit your vote now.");
+            }
+        }, 15000);
+    }
+    
+    function submitVoteAndResolve() {
+        if(currentGame.phase !== "voting") {
+            addChatMessage("📢 SYSTEM", "Not voting phase yet!");
+            return;
+        }
+        if(!currentGame.votes.humanVote) {
+            addChatMessage("📢 SYSTEM", "Please select someone to vote out!");
+            return;
+        }
+        
+        const counts = {};
+        for(let [voter, target] of Object.entries(currentGame.votes)) {
+            if(target) counts[target] = (counts[target] || 0) + 1;
+        }
+        
+        let eliminated = null, maxVotes = -1;
+        for(let [player, count] of Object.entries(counts)) {
+            if(count > maxVotes) { maxVotes = count; eliminated = player; }
+        }
+        
+        if(eliminated) {
+            const eliminatedPlayer = currentGame.players.find(p => p.name === eliminated);
+            const deathMsg = getDeathMessage(eliminated, eliminatedPlayer?.card?.name);
+            addChatMessage("📢 SYSTEM", `💀 ${eliminated} has been BANISHED! 💀`);
+            addChatMessage("📢 SYSTEM", deathMsg);
+            if(eliminatedPlayer?.card) {
+                addChatMessage("📢 SYSTEM", `📜 Revealed: ${eliminatedPlayer.card.name} - ${eliminatedPlayer.card.roots.substring(0,100)}`);
+            }
+            
+            let outcomeTitle, outcomeText;
+            if(eliminated === "You") {
+                outcomeTitle = "💔 YOU WERE BANISHED 💔";
+                outcomeText = "The group didn't believe your Belarusian roots. You walk into the potato wasteland...";
+            } else {
+                outcomeTitle = "🏆 THE BUNKER SURVIVES 🏆";
+                outcomeText = `You survived! ${eliminated} was banished. The potato crisis continues, but hope remains.`;
+            }
+            document.getElementById("outcomeTitle").innerText = outcomeTitle;
+            document.getElementById("outcomeText").innerHTML = outcomeText;
+            document.getElementById("outcomePanel").classList.remove("hidden");
+        }
+        
+        document.getElementById("votingPanel").style.display = "none";
+        if(currentGame.timerInterval) clearInterval(currentGame.timerInterval);
+    }
+    
+    // Event Listeners
     document.getElementById("startGameBtn").onclick = () => {
-        socket.emit('start-game', currentRoom);
+        document.getElementById("loreScreen").style.display = "none";
+        document.getElementById("gameScreen").style.display = "block";
+        startSoloGame();
     };
-
-    document.getElementById("exitBtn").onclick = () => location.reload();
-    document.getElementById("exitGameBtn").onclick = () => location.reload();
+    
+    document.getElementById("nextPhaseBtn").onclick = nextPhase;
+    document.getElementById("exitToLoreBtn").onclick = () => location.reload();
+    document.getElementById("playAgainBtn").onclick = () => location.reload();
+    document.getElementById("submitVoteBtn").onclick = submitVoteAndResolve;
+    
+    document.getElementById("sendChatBtn").onclick = () => {
+        const inp = document.getElementById("chatInput");
+        const msg = inp.value.trim();
+        if(msg && currentGame.active) {
+            addChatMessage("You", msg);
+            inp.value = "";
+        }
+    };
+    document.getElementById("chatInput").onkeypress = (e) => { if(e.key === "Enter") document.getElementById("sendChatBtn").click(); };
+    
+    document.getElementById("revealCardBtn").onclick = () => {
+        const cardDiv = document.getElementById("myCardDiv");
+        if(cardDiv) cardDiv.classList.toggle("card-hidden");
+    };
+    document.getElementById("copyCardBtn").onclick = () => {
+        if(currentGame.myCard) {
+            navigator.clipboard.writeText(`${currentGame.myCard.name}\nRoots: ${currentGame.myCard.roots}\nSkill: ${currentGame.myCard.skill}`);
+            alert("✅ Card copied!");
+        }
+    };
 </script>
 </body>
 </html>
